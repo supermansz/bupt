@@ -1,0 +1,32 @@
+/* pages/star/star.wxss */
+.type{
+font-size:30px;
+text-align: center;
+font-family:KaiTi;
+color:#696969;
+position:absolute;
+left:100px;
+top:150px;
+
+
+}
+page{
+  height:100%;
+  widows: 750px;
+  justify-content: center;
+  align-items: center;
+  overflow:hidden;
+position: fixed;
+background:url('https://pic2.zhimg.com/80/v2-36e162da61f6216cd44019f19eb8a3bf_720w.jpg?source=1940ef5c');
+background-size: 100% 100%;
+}
+.first{
+  margin-top: 12px;
+}
+.background {
+  width: 100%;
+  height: 100%;
+  position:fixed; 
+  background-size:100% 100%;
+  z-index: -1;
+}
