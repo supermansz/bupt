@@ -1,0 +1,58 @@
+/* pages/search/search.wxss */
+page{
+  height:100%;
+  widows: 750px;
+  justify-content: center;
+  align-items: center;
+    overflow:hidden;
+  position: fixed;
+  background:url('http://pic1.win4000.com/mobile/3/5562c133b0436_250_350.jpg');
+  background-size: 100% 100%;
+ 
+}
+.inputa{
+  width:100px;
+  border:0.4mm solid black;
+  position:absolute;
+left:210px;
+top:370px;
+}
+
+.inputb{
+  width:100px;
+  border:0.4mm solid black;
+  position:absolute;
+left:210px;
+top:400px;
+}
+.type1{
+  margin-top:20px;
+  position:absolute;
+left:100px;
+top:420px;
+}
+.type2{
+  margin-top:20px;
+  position:absolute;
+left:100px;
+top:470px;
+}
+
+.input1{
+  font-size:30px;
+  display:flex;
+  margin-top:20px;
+  font-family: KaiTi;
+  position:absolute;
+left:80px;
+top:345px;
+}
+.input2{
+  font-size:30px;
+  display:flex;
+  margin-top:20px;
+  font-family: KaiTi;
+  position:absolute;
+left:80px;
+top:375px;
+}
