@@ -1,0 +1,25 @@
+<!--pages/search/search.wxml-->
+<view >
+  <text class="input1">输入姓名</text>
+<input class="inputa"  bindinput="tab"></input>
+</view>
+
+
+<form bindsubmit="getdata">
+<view  >
+<text class="input2">信用评级</text>
+<text class="inputb" wx:if="{{output==0&&input==49}}" >优秀</text>
+<text class="inputb" wx:elif="{{4>output>0&&input==49}}">良好</text>
+<text class="inputb" wx:elif="{{10>output>3&&input==49}}">一般</text>
+<!--keycode为49用户的数据显示-->
+
+<text class="inputb" wx:elif="{{output2==0&&input==50}}" >优秀</text>
+<text class="inputb" wx:elif="{{4>output2>0&&input==50}}">良好</text>
+<text class="inputb" wx:elif="{{output2>3&&input==50}}">一般</text>
+<text class="inputb" wx:else="{{output<0&&input==8}}" >人无信不立</text>
+<!--keycode为50用户的数据显示-->
+</view>
+
+<view  class="type1"><button type="default" formType="submit">查询</button></view>
+<view   class="type2"><button type="default"  bindtap="backBtn">返回</button></view>
+</form>
