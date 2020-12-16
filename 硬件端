@@ -1,0 +1,85 @@
+#include <ESP8266WiFi.h>
+#include <IRremote.h>//引入红外解码库
+int RECV_PIN = 10;   //红外线接收器OUTPUT端接在pin 10
+IRrecv irrecv(RECV_PIN);  //定义IRrecv对象来接收红外线信号
+decode_results results;   //解码结果放在decode_results构造的对象results里
+
+const char *ssid     = "WIFI";          //wifi的ssid
+const char *password = "PASSWORD";      //wifi密码
+
+const char *host = "api.heclouds.com"; //使用Server服务端的IP 183.230.40.33
+const int httpPort = 80;                 //Server服务端的端口号
+
+
+void setup(void)
+{
+  Serial.begin(115200);
+  irrecv.enableIRIn(); // 启动红外解码
+  Serial.println();       //换行
+  Serial.printf("Wifi Connecting to %s\n", ssid);
+
+  WiFi.mode(WIFI_STA);                         //默认情况下，ESP8266将尝试充当客户端和接入点。为避免干扰现有WIFI网络，明确将其设置为WiFi客户端。
+  WiFi.begin(ssid, password);                  //启动Wifi连接
+//WiFi.config(local_ip, gateway, subnet, dns1, dns2);
+  WiFi.config(staticIP, gateway, subnet);      //使用固定IP方式
+
+  while (WiFi.status() != WL_CONNECTED)        //阻塞式等待，直到连接成功
+  {
+    delay(500);                                 //每500MS检测一次，一直到连接成功
+    Serial.print(".");
+  }
+
+  Serial.println();
+  Serial.print("WiFi Connected OK, IP address: ");  //显示WIFI连接成功获取的本地IP
+  Serial.println(WiFi.localIP());
+}
+
+
+//WiFiClient创建一个TCP客户端，可以连接到client.connect（）中定义的指定Internet IP地址服务器的端口。
+//用HTTP协议连接OneNET服务器，并用POST方法上报数据
+void loop()                                 
+{
+//用HTTP协议连接OneNET服务器
+   WiFiClient client;                            //用WiFiClient类创建 client 对象，实现HTTP协议连接OneNET服务器
+  if (!client.connect(host, port)) {       //若连接中移动服务器失败就等5秒，重新连接
+    Serial.println("connection failed");
+    delay(5000);                       //等5秒
+    return;                                //程序返回到loop重新开始
+  }
+ if (irrecv.decode(&results)) {      //解码成功，收到一组红外线信号，判断信号编码识别停车位置
+    if(results.value == 0xFF30CF&&client.connected())
+    {String url = "http://api.heclouds.com/devices/ID/datapoints?type=3";  //参数type=3表示用 简洁数据格式,自行填写设备ID
+    client.print(String("POST ")+url+" HTTP/1.1\r\n");                                                 //使用HTTP/1.1协议
+    client.print(String("api-key: ")+"APIKEY\r\n");             //需改为自己的主密钥
+    client.print(String("Host: ")+"api.heclouds.com\r\n");
+    client.print("Connection: close\r\n");
+    client.print("Content-Length:23\r\n\r\n");
+
+    client.print(String("{\"AAAAAAA\":"));
+    client.print(12);                                       
+    client.print(String(",\"AAA\":"));
+    client.print(30);                                      
+    client.print(String("}"));
+    delay(3000);
+  }
+  if(results.value == 0xFF18E7&&client.connected())
+  {String url = "http://api.heclouds.com/devices/ID/datapoints?type=3";  //参数type=3表示用 简洁数据格式,自行填写设备ID
+    client.print(String("POST ")+url+" HTTP/1.1\r\n");                                                 //使用HTTP/1.1协议
+    client.print(String("api-key: ")+"APIKEY\r\n");             //需改为自己的主密钥
+    client.print(String("Host: ")+"api.heclouds.com\r\n");
+    client.print("Connection: close\r\n");
+    client.print("Content-Length:23\r\n\r\n");
+
+    client.print(String("{\"BBBBBBB\":"));
+    client.print(12);                                       
+    client.print(String(",\"BBB\":"));
+    client.print(30);                                      
+    client.print(String("}"));
+    delay(3000);
+
+  }
+  client.stop();                     //关闭HTTP客户端
+  delay(20000);
+ }
+    irrecv.resume(); //  接收下一个值
+}
