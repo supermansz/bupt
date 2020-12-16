@@ -1,0 +1,9 @@
+<!--pages/star/star.wxml-->
+<view  class='type'>
+    用户信用查询
+</view>
+
+<view >
+  <button class="first" type="default" bindtap="logBin">点击开始</button>
+</view>
+
